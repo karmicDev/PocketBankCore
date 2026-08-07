@@ -19,7 +19,7 @@ struct MoneyTests {
 
     // When
     let money = Money(amount: amount, currency: currency)
-    
+
     // Then
     #expect(money.amount == amount)
     #expect(money.currency == currency)
@@ -62,29 +62,39 @@ struct MoneyTests {
 
     // When
     let updatedMoney = try money.adding(Money(amount: 10.01, currency: .eur))
-    if money.currency != updatedMoney.currency {
-      throw MoneyError.currencyMismatch
-    }
-    
+
     // Then
-    #expect(updatedMoney.amount == 21.00)
+    #expect(updatedMoney.amount == Decimal(21))
+    #expect(updatedMoney.currency == .eur)
   }
 
   @Test
-  func rejectsMoneyWithDifferentCurrency() throws {
-    let amount: Decimal = 10.99
-    let currency: Currency = Currency.eur
-    let money = Money(amount: amount, currency: currency)
+  func rejectsAddingMoneyWithDifferentCurrencies() {
+    // Given
+    let money = Money(amount: 10, currency: .eur)
 
-    // When
-    do {
-      let updatedMoney = try money.adding(Money(amount: 10.01, currency: .usd))
-      // Then
-      #expect(money.amount == amount)
-      
-    } catch {
-      // Then
-      // ???
+    // Then
+    #expect(throws: MoneyError.currencyMismatch) {
+      try money.adding(
+        Money(amount: 10, currency: .usd)
+      )
     }
+  }
+
+  @Test
+  func moneyWithSameAmountAndCurrencyIsEqual() {
+    // Given
+    let first = Money(
+      amount: 10,
+      currency: .eur
+    )
+
+    let second = Money(
+      amount: 10,
+      currency: .eur
+    )
+
+    // Then
+    #expect(first == second)
   }
 }

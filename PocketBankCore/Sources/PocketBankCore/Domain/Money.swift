@@ -17,11 +17,13 @@ public struct Money: Sendable, Hashable, Codable {
   }
   
   public func adding(_ other: Money) throws -> Money {
-    if self.currency != other.currency {
+    guard self.currency == other.currency else {
       throw MoneyError.currencyMismatch
     }
     
-    let newAmmount = self.amount + other.amount
-    return Money(amount: newAmmount, currency: self.currency)
+    return Money(
+      amount: amount + other.amount,
+      currency: self.currency
+    )
   }
 }

@@ -7,15 +7,13 @@
 
 import Foundation
 
-public enum MoneyError: Error {
-  case currencyMismatch
-}
+public enum MoneyError: LocalizedError {
+    case currencyMismatch
 
-public extension MoneyError {
-  var errorDescription: String {
-    switch self {
-    case .currencyMismatch:
-      return "Currency Mismatch: This operation only supports matching currencies."
+    public var errorDescription: String? {
+        switch self {
+        case .currencyMismatch:
+            return "Cannot perform arithmetic on different currencies."
+        }
     }
-  }
 }
