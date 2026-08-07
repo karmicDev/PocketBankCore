@@ -11,7 +11,9 @@ public struct Currency: Sendable, Hashable, Codable {
   public let code: String
 
   public init?(code: String) {
-    let normalized = code.uppercased()
+    let normalized = code
+      .trimmingCharacters(in: .whitespacesAndNewlines)
+      .uppercased()
 
     guard normalized.count == 3 else {
       return nil
