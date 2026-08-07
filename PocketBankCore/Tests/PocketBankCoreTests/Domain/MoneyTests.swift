@@ -28,36 +28,63 @@ struct MoneyTests {
   @Test
   func allowsZeroAmount() {
     // Given
-    
+    let amount: Decimal = 0.00
+    let currency: Currency = Currency.eur
+
     // When
+    let money = Money(amount: amount, currency: currency)
     
     // Then
+    #expect(money.amount == amount)
+    #expect(money.currency == currency)
   }
 
   @Test
   func allowsNegativeAmount() {
     // Given
-    
+    let amount: Decimal = -10.00
+    let currency: Currency = Currency.eur
+
     // When
+    let money = Money(amount: amount, currency: currency)
     
     // Then
+    #expect(money.amount == amount)
+    #expect(money.currency == currency)
   }
 
   @Test
-  func addsMoneyWithSameCurrency() {
+  func addsMoneyWithSameCurrency() throws{
     // Given
-    
+    let amount: Decimal = 10.99
+    let currency: Currency = Currency.eur
+    let money = Money(amount: amount, currency: currency)
+
     // When
+    let updatedMoney = try money.adding(Money(amount: 10.01, currency: .eur))
+    if money.currency != updatedMoney.currency {
+      throw MoneyError.currencyMismatch
+    }
     
     // Then
+    #expect(updatedMoney.amount == 21.00)
   }
 
   @Test
-  func rejectsMoneyWithDifferentCurrency() {
-    // Given
+  func rejectsMoneyWithDifferentCurrency() throws {
+    let amount: Decimal = 10.99
+    let currency: Currency = Currency.eur
+    let money = Money(amount: amount, currency: currency)
 
     // When
-
-    // Then
+    do {
+      let updatedMoney = try money.adding(Money(amount: 10.01, currency: .usd))
+      // Then
+      #expect(money.amount == amount)
+      
+    } catch {
+      // Then
+      // ???
+    }
   }
 }

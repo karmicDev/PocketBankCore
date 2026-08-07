@@ -15,4 +15,13 @@ public struct Money: Sendable, Hashable, Codable {
     self.amount = amount
     self.currency = currency
   }
+  
+  public func adding(_ other: Money) throws -> Money {
+    if self.currency != other.currency {
+      throw MoneyError.currencyMismatch
+    }
+    
+    let newAmmount = self.amount + other.amount
+    return Money(amount: newAmmount, currency: self.currency)
+  }
 }
