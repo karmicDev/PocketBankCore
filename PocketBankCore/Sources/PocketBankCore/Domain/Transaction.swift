@@ -11,7 +11,7 @@ public struct Transaction: Sendable, Hashable, Codable {
   public let id: TransactionID
   public let accountID: AccountID
   public let amount: Money
-  public let timestamp: Date?
+  public let timestamp: Date
   public let status: TransactionStatus
 
   public init(
