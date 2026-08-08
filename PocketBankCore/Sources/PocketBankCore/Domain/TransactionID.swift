@@ -1,13 +1,13 @@
 //
-//  AccountID.swift
+//  TransactionID.swift
 //  PocketBankCore
 //
-//  Created by karmic on 8/7/26.
+//  Created by karmic on 8/8/26.
 //
 
 import Foundation
 
-public struct AccountID: Sendable, Hashable, Codable {
+public struct TransactionID: Sendable, Hashable, Codable {
   public let value: UUID
 
   public init() {
