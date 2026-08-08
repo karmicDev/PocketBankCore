@@ -22,22 +22,22 @@ struct TransactionTests {
 
     // When
     let transaction = try Transaction(
-      transactionID: id,
+      id: id,
       accountID: accountID,
       amount: amount,
-      timeStamp: timeStamp,
+      timestamp: timeStamp,
       status: status)
 
     // Then
     #expect(id == transaction.id)
     #expect(accountID == transaction.accountID)
     #expect(amount == transaction.amount)
-    #expect(timeStamp == transaction.timeStamp)
+    #expect(timeStamp == transaction.timestamp)
     #expect(status == transaction.status)
   }
 
   @Test
-  func generatesUniqueTransactionID() throws {
+  func generatesUniqueTransactionIDs() throws {
     // Given / When
     let first = try Transaction(
       accountID: AccountID(),
@@ -49,17 +49,17 @@ struct TransactionTests {
       status: TransactionStatus.pending)
     
     // Then
-    #expect(first != seccond)
+    #expect(first.id != seccond.id)
   }
 
   @Test
-  func preservesExplictProvidedTransactionID() throws {
+  func preservesExplicitlyProvidedTransactionID() throws {
     // Given
     let id = TransactionID()
     
     // When
     let transaction = try Transaction(
-      transactionID: id,
+      id: id,
       accountID: AccountID(),
       amount: Money(amount: 100, currency: .eur),
       status: TransactionStatus.pending)
@@ -96,7 +96,7 @@ struct TransactionTests {
   }
 
   @Test
-  func accesptsNegativeAmounts() throws {
+  func acceptsNegativeAmounts() throws {
     // Given / When
     let transaction = try Transaction(
       accountID: AccountID(),
@@ -186,5 +186,62 @@ struct TransactionTests {
 
     // Then
     #expect(original == decoded)
+  }
+  
+  @Test
+  func transactionsWithSameValuesAreEqual() throws {
+      // Given
+      let id = TransactionID()
+      let accountID = AccountID()
+      let amount = Money(amount: 100, currency: .eur)
+      let timestamp = Date()
+
+      let first = try Transaction(
+          id: id,
+          accountID: accountID,
+          amount: amount,
+          timestamp: timestamp,
+          status: .completed
+      )
+
+      let second = try Transaction(
+          id: id,
+          accountID: accountID,
+          amount: amount,
+          timestamp: timestamp,
+          status: .completed
+      )
+
+      // Then
+      #expect(first == second)
+  }
+  
+  @Test
+  func transactionsWithDifferentIDsAreNotEqual() throws {
+    // Given
+    let idFirst = TransactionID()
+    let idSecond = TransactionID()
+    let accountID = AccountID()
+    let amount = Money(amount: 100, currency: .eur)
+    let timestamp = Date()
+
+    let first = try Transaction(
+        id: idFirst,
+        accountID: accountID,
+        amount: amount,
+        timestamp: timestamp,
+        status: .completed
+    )
+
+    let second = try Transaction(
+        id: idSecond,
+        accountID: accountID,
+        amount: amount,
+        timestamp: timestamp,
+        status: .completed
+    )
+
+    // Then
+    #expect(first != second)
   }
 }

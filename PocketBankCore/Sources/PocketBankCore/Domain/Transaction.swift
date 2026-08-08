@@ -11,36 +11,36 @@ public struct Transaction: Sendable, Hashable, Codable {
   public let id: TransactionID
   public let accountID: AccountID
   public let amount: Money
-  public let timeStamp: Date?
+  public let timestamp: Date?
   public let status: TransactionStatus
 
   public init(
-    transactionID: TransactionID,
+    id: TransactionID,
     accountID: AccountID,
     amount: Money,
-    timeStamp: Date? = nil,
+    timestamp: Date? = nil,
     status: TransactionStatus) throws {
       guard amount.amount != 0 else {
         throw TransactionError.zeroAmount
       }
 
-      self.id = transactionID
+      self.id = id
       self.accountID = accountID
       self.amount = amount
-      self.timeStamp = timeStamp ?? Date()
+      self.timestamp = timestamp ?? Date()
       self.status = status
   }
 
   public init(
     accountID: AccountID,
     amount: Money,
-    timeStamp: Date? = nil,
+    timestamp: Date? = nil,
     status: TransactionStatus) throws {
       try self.init(
-        transactionID: TransactionID(),
+        id: TransactionID(),
         accountID: accountID,
         amount: amount,
-        timeStamp: timeStamp,
+        timestamp: timestamp,
         status: status)
   }
 }
