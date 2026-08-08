@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum TransactionError: LocalizedError {
+public enum TransactionError: LocalizedError {
   case zeroAmount
 
-  var errorDescription: String {
+  public var errorDescription: String {
     switch self {
-    case .zeroAmount: return "A Transaction can not have an ammount with value 0.00!"
+    case .zeroAmount: return "A transaction cannot have an amount of zero."
     }
   }
 }
